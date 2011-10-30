@@ -151,7 +151,7 @@ function updateClient() {
             }
             break;
           case "PART_INTRO":
-            $("#sm_end").hide();
+            destroyWheelOfFortune("wheelOfFortunePanel");
             if (JGenerous.returnData.firstAllocationFinished) {
               intro2();
             } else {
@@ -160,12 +160,12 @@ function updateClient() {
             waitingOtherMove = false;
             break;
           case "COOPERATION_ROUND_A":
-            $("#sm_end").hide();
+            destroyWheelOfFortune("wheelOfFortunePanel");
             roundA();
             waitingOtherMove = false;
             break;
           case "COOPERATION_ROUND_B":
-            $("#sm_end").hide();
+            destroyWheelOfFortune("wheelOfFortunePanel");
             roundB();
             break;
           case "PAYOFF_ROUND":
@@ -183,7 +183,6 @@ function updateClient() {
               while (poe.length < 3) {
                 poe = "0" + poe;
               }
-              initSlotMachine('sm_end', 'Another Round?', poe);
             } else {
               if ($("#status").length == 0) {
                 $("#draw").append("<div id='status' class='waiting'>Waiting for the other players...</div>");
@@ -197,7 +196,7 @@ function updateClient() {
               (JGenerous.returnData.eli == "Yes" ? "and Part 1 " : "") + "of the game</p>");
             $("#navi").html("<div class='navi'></div>");
             $("#status").remove();
-            $("#sm_end").hide();
+            destroyWheelOfFortune("wheelOfFortunePanel");
             $(".container").parent().parent().show();
             clearInterval (JGenerous.interval);
             break;
@@ -209,7 +208,7 @@ function updateClient() {
             $("#navi").html("<div class='navi'><div id='right' style='visibility:hidden'/></div>");
             $(".container").parent().parent().show();
             $("#status").remove();
-            $("#sm_end").hide();
+            destroyWheelOfFortune("wheelOfFortunePanel");
             break;
           case "CANCELLED":
             waitingUserMove = false;
@@ -218,7 +217,7 @@ function updateClient() {
             $("#message").html("<p><b>Thank you for playing.</b></p> <p>Unfortunately, the game could not be completed and was cancelled by the administrator.</p>  <p>You will still be paid for your participation but bonuses will not be awarded.</p>  <p>Please contact us at <a href='mailto:mturkgroup@gmail.com'>mturkgroup@gmail.com</a> with any questions or comments about this game.</p>");
             $("#navi").html("<div class='navi'><div id='right' style='visibility:hidden'/></div>");
             $("#status").remove();
-            $("#sm_end").hide();
+            destroyWheelOfFortune("wheelOfFortunePanel");
             $(".container").parent().parent().show();
             clearInterval (JGenerous.interval);
             break;
@@ -226,12 +225,12 @@ function updateClient() {
             finish();
             clearInterval (JGenerous.interval);
             $("#status").remove();
-            $("#sm_end").hide();
+            destroyWheelOfFortune("wheelOfFortunePanel");
             break;
           case "DROPPED":
             waitingUserMove = false;
             $("#status").remove();
-            $("#sm_end").hide();
+            destroyWheelOfFortune("wheelOfFortunePanel");
             $("#statusDiv").html("Dropped from game.");
             $("#title").html("");
             $("#message").html("<p><b>Thank you for playing.</b></p>" + JGenerous.returnData.reason);

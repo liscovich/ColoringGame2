@@ -83,6 +83,7 @@ public class LiscovichGame {
 	private Set<String> trackers = new HashSet<String>();
 	private Map<String, Integer> trackersWeight = new HashMap<String, Integer>();
 	private int lastRound = -1;
+    private boolean isLastRound = false;
 	private PrintWriter logStream, reportStream;
 	private File logFile, reportFile;
 	private String contextPath;
@@ -836,6 +837,10 @@ public class LiscovichGame {
 
 	public int getLastRound() {
 		return lastRound;
+	}
+
+	public boolean isLastRound() {
+		return isLastRound;
 	}
 
 	public List<String> getLog() {
@@ -1611,6 +1616,7 @@ public class LiscovichGame {
 						// Move on to the next round
 						Date date = new Date();
 						lastRound = curRound;
+                        isLastRound = curRound == minRoundsOption[curSet];
 						// Show the results for the previous round
 						status = Status.PAYOFF_ROUND;
 					}

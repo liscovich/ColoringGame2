@@ -1868,8 +1868,9 @@ function showNeighborAction(neighborNumber, useLocal) {
       }
     } else {
       if (!JGenerous.shownFinalResults) {
-        $('#navi').html("<div class='navi'></div>")
-        spinem('sm_end', JGenerous.returnData.roundPoe, JGenerous.returnData.poe, "shownPayoff()");
+        $('#navi').html("<div class='navi'></div>");
+        createWheelOfFortune('wheelOfFortunePanel');
+        //spinem('sm_end', JGenerous.returnData.roundPoe, JGenerous.returnData.poe, "shownPayoff()");
       }
     }
   } else {
@@ -2568,6 +2569,87 @@ function firstStep() {
     $("#status").remove();
   });
 }
+function createWheelOfFortune(canvasSelector){
+    var isLastRound = JGenerous.returnData.isLastRound;
+    $("#" + canvasSelector).show();
+    var width = $('#wheel_of_fortune').width();
+    var height = $('#wheel_of_fortune').width();
+    var cx = width / 2;
+    var cy = height / 2;
+    var dialLength = 10;
+    var rotTimes = 6;
+    var rad = (width / 2) -10;
+    var paper = Raphael('wheel_of_fortune', width, height);
+    paper.clear();
+    var chance = JGenerous.returnData.poe;
+    var startAngleNo = 90 + (360 * chance / 2) - 2;
+    var endAngleNo = 90 - (360 * chance / 2) + 2;
+    var startAngleYes = 270 - (360 * (1-chance) / 2);
+    var endAngleYes = 270 + (360 * (1-chance) / 2);
+    function arc(center, radius, startAngle, endAngle) {
+        (startAngle < endAngle)?angle = startAngle: angle = endAngle;
+        (startAngle > endAngle)?maxAngle = startAngle: maxAngle = endAngle;
+        coords = toCoords(center, radius, angle);
+        path = "M " + coords[0] + " " + coords[1];
+        while(angle<=maxAngle) {
+            coords = toCoords(center, radius, angle);
+            path += " L " + coords[0] + " " + coords[1];
+            angle += 1;
+        }
+        return path;
+    }
+
+    function toCoords(center, radius, angle) {
+        var radians = (angle/180) * Math.PI;
+        var x = center[0] + Math.cos(radians) * radius;
+        var y = center[1] + Math.sin(radians) * radius;
+        return [x, y];
+    }
+
+    var noArc = paper.path(arc([width/2, height/2], rad, startAngleNo, endAngleNo)).attr({"stroke": "#ddd", "stroke-width": 8});
+    var t = paper.text(width/2, height/4, "Yes").attr({ "fill": "#999", "font-size": 12, "font-family": "Arial, Helvetica, sans-serif" });
+
+    var yesArc = paper.path(arc([width/2, height/2], rad, startAngleYes, endAngleYes)).attr({"stroke": "#ddd", "stroke-width": 8});
+    var t = paper.text(width/2, height*3/4, "No").attr({ "fill": "#999", "font-size": 12, "font-family": "Arial, Helvetica, sans-serif" });
+
+    var dialPath = "M"
+                  + (cx - 5)
+                  + " "
+                  + (cy - 5)
+                  + "L"
+                  + (cx - 5)
+                  + " "
+                  + (cy + 5)
+                  + "L"
+                  + (cx + dialLength)
+                  + " "
+                  + cy
+                  + "Z";
+    var dial = paper.path(dialPath).attr({ "fill": "#999"});
+    dial.rotate(0,cx, cy,true);
+
+    var min = !isLastRound ? startAngleYes : endAngleNo;
+    var max = !isLastRound ? endAngleYes : startAngleNo;
+    var rotAngle = (360 * (rotTimes - 1)) + (Math.floor(Math.random() * (max - min + 1)) + min);
+    var rotString = rotAngle + " " + cx + " " + cy;
+
+    var activeArc = !isLastRound ? yesArc : noArc ;
+    dial.animate({rotation:rotString},1000,'<',function(){
+        activeArc.animate({scale:"1.05 1.05", stroke: "#666"},200,'bounce',function() {
+            activeArc.animate({scale:"1 1"},200,'bounce',function() {
+                setTimeout(function() {
+                    shownPayoff();
+                }, 2000);
+            });
+        });
+    });
+}
+
+function destroyWheelOfFortune(canvasSelector){
+    $('#wheel_of_fortune').empty();
+    $("#" + canvasSelector).hide();
+}
+
 function initSlotMachine(slotMachine, header, threshold) {
   var w = 162;
   var curlyLimit = 18;

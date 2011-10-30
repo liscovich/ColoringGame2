@@ -735,3 +735,16 @@ left: 7px;
 position: absolute;
 font-size: 8pt;
 }
+#wheelOfFortunePanel {
+    margin: 0 auto 0;
+    height: 150px;
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    top: 450px;
+}
+#wheel_of_fortune {
+    margin: 0 auto 0;
+    width: 110px;
+    height: 110px;
+}

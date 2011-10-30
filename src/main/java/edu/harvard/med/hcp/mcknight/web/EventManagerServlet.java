@@ -70,6 +70,7 @@ public class EventManagerServlet extends HttpServlet {
 		public boolean shownRewiring;
 		public int round;
 		public int lastRound;
+		public boolean isLastRound;
 		public int bonus;
 		public int coc;
 		public int payOff;
@@ -464,6 +465,7 @@ public class EventManagerServlet extends HttpServlet {
 			rData.shownPayoff = getGame(serverid).getPlayer(clientid).getShownPayoff(getGame(serverid).getCurRound());
 			rData.round = getGame(serverid).getCurRound();
 			rData.lastRound = getGame(serverid).getLastRound();
+            rData.isLastRound = getGame(serverid).isLastRound();
 			rData.bonus = getGame(serverid).getPlayer(clientid).getCents();
 			rData.doneElicitation = getGame(serverid).getPlayer(clientid).isDoneElicitation();
 			rData.progress = getGame(serverid).getPlayer(clientid).getProgess();
